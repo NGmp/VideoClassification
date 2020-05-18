@@ -1,5 +1,5 @@
 import os
-
+import cv2 as cv
 import numpy as np
 import skvideo
 import torch
@@ -47,7 +47,8 @@ class VideoDataset(torch.utils.data.Dataset):
             video_label = 0
         else:
             video_label = 2
-        video = sk.vread(video_file)
+        video = cv.VideoCapture(video_file) #sk.vread(video_file)
+
         time_index = np.random.randint(video.shape[0] - self.duration)
         height_index = np.random.randint(video.shape[1] - self.crop_size)
         width_index = np.random.randint(video.shape[2] - self.crop_size)

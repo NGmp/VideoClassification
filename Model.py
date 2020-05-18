@@ -18,17 +18,13 @@ class VideoClassifier(nn.Module):
             self.fc2 = nn.Linear(in_features= 4096, out_features=num_classes)
 
     def forward(self, x):
-        print(x.shape)
         x = self.conv1(x)
         x = self.norm(x)
         x = self.pool(x)
-        print(x.shape)
         x = self.conv2(x)
         x = self.norm2(x)
         x = self.pool2(x)
         x = x.view(-1, x.shape[1]*x.shape[2]*x.shape[3]*x.shape[4])
-        print(x.shape)
         x = self.fc1(x)
-        print(x.shape)
         x = self.fc2(x)
         return x

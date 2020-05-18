@@ -1,7 +1,6 @@
 import torch
 import torchvision
 from torch import optim, nn
-
 import  VideoDataset
 import Model
 
@@ -29,7 +28,6 @@ for epoch in range(num_epochs):
         total = 0
         count = 0
         for videos, labels in loaders[phase]:
-
             videos = videos.to(device)
             labels = labels.to(device)
             optimizer.zero_grad()
