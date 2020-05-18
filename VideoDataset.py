@@ -15,7 +15,7 @@ from skvideo import io as sk
         
     
     Clip duration 16 frames
-    Hight - Width : 20x20
+    Height - Width : 20x20
 '''
 
 class VideoDataset(torch.utils.data.Dataset):
