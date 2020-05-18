@@ -1,16 +1,18 @@
 import torch
-import torchvision
+#import torchvision
 from torch import optim, nn
 import  VideoDataset
 import Model
 
-batch_size = 1
+batch_size = 32
 dataset_train = VideoDataset.VideoDataset()
 dataset_val = VideoDataset.VideoDataset(dataset='val')
 dataset_test = VideoDataset.VideoDataset(dataset= 'test')
 loaders = {'train' :torch.utils.data.DataLoader(dataset_train, batch_size=batch_size ,shuffle=True, num_workers=1), 'val': torch.utils.data.DataLoader(dataset_val,  batch_size=batch_size ,shuffle=False, num_workers=1), 'test': torch.utils.data.DataLoader(dataset_test,  batch_size=batch_size ,shuffle=False, num_workers=1)}
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+print(torch.cuda.is_available())
+print(device)
+#exit(2)
 model = Model.VideoClassifier(num_classes=3)
 model.to(device)
 optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)

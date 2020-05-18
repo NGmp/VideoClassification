@@ -3,7 +3,7 @@ import cv2 as cv
 import numpy as np
 import skvideo
 import torch
-import torchvision
+#import torchvision
 from torch import nn
 from skvideo import io as sk
 
@@ -47,8 +47,24 @@ class VideoDataset(torch.utils.data.Dataset):
             video_label = 0
         else:
             video_label = 2
-        video = cv.VideoCapture(video_file) #sk.vread(video_file)
+        #sk.vread(video_file)
+       
+        cap = cv.VideoCapture(video_file)
+        video = None
+        ret = True
+        while(ret):
+         ret, frame = cap.read()
+         if ret:
+          #print('frame')
+          #print(frame.shape)
+          if video is None:
+              video = frame.reshape((1,frame.shape[0],frame.shape[1],frame.shape[2]))
+          else:
+              video = np.vstack((video, frame.reshape((1,frame.shape[0],frame.shape[1],frame.shape[2]))))
 
+        cap.release()
+        #print(video.shape)
+        #exit(2)
         time_index = np.random.randint(video.shape[0] - self.duration)
         height_index = np.random.randint(video.shape[1] - self.crop_size)
         width_index = np.random.randint(video.shape[2] - self.crop_size)
