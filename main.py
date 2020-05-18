@@ -5,7 +5,7 @@ from torch import optim, nn
 import  VideoDataset
 import Model
 
-batch_size = 3
+batch_size = 1
 dataset_train = VideoDataset.VideoDataset()
 dataset_val = VideoDataset.VideoDataset(dataset='val')
 dataset_test = VideoDataset.VideoDataset(dataset= 'test')
@@ -29,6 +29,9 @@ for epoch in range(num_epochs):
         total = 0
         count = 0
         for videos, labels in loaders[phase]:
+
+            videos = videos.to(device)
+            labels = labels.to(device)
             optimizer.zero_grad()
 
             videos = videos.to(device)
