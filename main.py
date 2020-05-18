@@ -29,15 +29,24 @@ for epoch in range(num_epochs):
         total = 0
         count = 0
         for videos, labels in loaders[phase]:
-            output = model(videos)
-            loss = criterion(output, labels)
-            _, preds = torch.max(output, 1)
-            running_corrects += torch.sum(preds == labels.data)
+            optimizer.zero_grad()
 
-            total += videos.shape[0]
-            count+=1
-            if count % 10 == 0:
-                print('Running accuracy : {}, phase '.format(running_corrects / total, phase))
+            videos = videos.to(device)
+            labels = labels.to(device)
+            with torch.set_grad_enabled(phase == 'train'):
+                output = model(videos)
+                loss = criterion(output, labels)
+                _, preds = torch.max(output, 1)
+                running_corrects += torch.sum(preds == labels.data)
+
+                total += videos.shape[0]
+                count += 1
+                if count % 10 == 0:
+                    print('Running accuracy : {}, phase '.format(running_corrects / total, phase))
+                if phase == 'train':
+                    loss.backward()
+
+                    optimizer.step()
 
         epoch_acc = running_corrects/total, phase
         print('Epoch accuracy : {} , phase '.format())
